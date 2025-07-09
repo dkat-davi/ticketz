@@ -4,6 +4,7 @@ import isAdmin from "../middleware/isAdmin";
 
 import * as WhatsAppController from "../controllers/WhatsAppController";
 import * as PrivacyController from "../controllers/PrivacyController";
+import isSupervisor from "../middleware/isSupervisor";
 
 const whatsappRoutes = express.Router();
 
@@ -14,7 +15,7 @@ whatsappRoutes.post("/whatsapp/", isAuth, isAdmin, WhatsAppController.store);
 whatsappRoutes.get(
   "/whatsapp/:whatsappId",
   isAuth,
-  isAdmin,
+  isSupervisor,
   WhatsAppController.show
 );
 

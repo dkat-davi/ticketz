@@ -80,7 +80,9 @@ const ListTicketsService = async ({
   let whereCondition: Filterable["where"] = {
     [Op.and]: andedOrs,
     queueId: {
-      [Op.or]: user.profile === "admin" ? [queueIds, null] : [queueIds]
+      [Op.or]: ["admin", "supervisor"].includes(user.profile)
+        ? [queueIds, null]
+        : [queueIds]
     }
   };
 
@@ -118,7 +120,7 @@ const ListTicketsService = async ({
     }
   ];
 
-  if (showAll === "true" && user.profile === "admin") {
+  if (showAll === "true" && ["admin", "supervisor"].includes(user.profile)) {
     andedOrs.length = 0;
     whereCondition = {
       [Op.and]: andedOrs,

@@ -29,9 +29,11 @@ import {
   Refresh,
   Replay
 } from "@material-ui/icons";
+import { Can } from "../../components/Can";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhoneSlash, faQrcode, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 import MainContainer from "../../components/MainContainer";
 import MainHeader from "../../components/MainHeader";
@@ -100,6 +102,7 @@ const CustomToolTip = ({ title, content, children }) => {
 };
 
 const Connections = () => {
+	const { user: loggedInUser } = useContext(AuthContext);
 	const classes = useStyles();
 
 	const { whatsApps, loading } = useContext(WhatsAppsContext);
@@ -360,15 +363,21 @@ const Connections = () => {
 			/>
 			<MainHeader>
 				<Title>{i18n.t("connections.title")}</Title>
-				<MainHeaderButtonsWrapper>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleOpenWhatsAppModal}
-					>
-						{i18n.t("connections.buttons.add")}
-					</Button>
-				</MainHeaderButtonsWrapper>
+				<Can
+					role={loggedInUser.profile}
+					perform="connections-page:addConnection"
+					yes={() => (
+						<MainHeaderButtonsWrapper>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={handleOpenWhatsAppModal}
+							>
+								{i18n.t("connections.buttons.add")}
+							</Button>
+						</MainHeaderButtonsWrapper>
+					)}
+				/>
 			</MainHeader>
 			<Paper className={classes.mainPaper} variant="outlined">
 				<Table size="small">
@@ -420,30 +429,39 @@ const Connections = () => {
 												)}
 											</TableCell>
 											<TableCell align="center">
-												<IconButton
-													size="small"
-													onClick={() => handleEditWhatsApp(whatsApp)}
-												>
-													<Edit />
-												</IconButton>
+												<Can
+													role={loggedInUser.profile}
+													perform="connections-page:editOrDeleteConnection"
+													yes={() => (
+														<>
+														<IconButton
+															size="small"
+															onClick={() => handleEditWhatsApp(whatsApp)}
+														>
+															<Edit />
+														</IconButton>
 
-												{whatsApp.status === "CONNECTED" && (
-													<IconButton
-														size="small"
-														onClick={() => handleOpenPrivacyWhatsApp(whatsApp)}
-													>
-														<Lock />
-													</IconButton>
-												)}
+														{whatsApp.status === "CONNECTED" && (
+															<IconButton
+																size="small"
+																onClick={() => handleOpenPrivacyWhatsApp(whatsApp)}
+															>
+																<Lock />
+															</IconButton>
+														)}
 
-												<IconButton
-													size="small"
-													onClick={e => {
-														handleOpenConfirmationModal("delete", whatsApp.id);
-													}}
-												>
-													<DeleteOutline />
-												</IconButton>
+														<IconButton
+															size="small"
+															onClick={e => {
+																handleOpenConfirmationModal("delete", whatsApp.id);
+															}}
+														>
+															<DeleteOutline />
+														</IconButton>
+														</>
+													)}
+												/>
+												
 											</TableCell>
 										</TableRow>
 									))}

@@ -426,6 +426,7 @@ const MainListItems = (props) => {
                 icon={<AnnouncementIcon />}
               />
             )}
+
             <ListItemLink
               to="/connections"
               primary={i18n.t("mainDrawer.listItems.connections")}
@@ -435,32 +436,37 @@ const MainListItems = (props) => {
                 </Badge>
               }
             />
-            <ListItemLink
-              to="/queues"
-              primary={i18n.t("mainDrawer.listItems.queues")}
-              icon={<AccountTreeOutlinedIcon />}
-            />
-            <ListItemLink
-              to="/users"
-              primary={i18n.t("mainDrawer.listItems.users")}
-              icon={<PeopleAltOutlinedIcon />}
-            />
-            <ListItemLink
-              to="/messages-api"
-              primary={i18n.t("mainDrawer.listItems.messagesAPI")}
-              icon={<CodeRoundedIcon />}
-            />
-             <ListItemLink
-                to="/financeiro"
-                primary={i18n.t("mainDrawer.listItems.financeiro")}
-                icon={<LocalAtmIcon />}
-              />
+            {
+              user.profile === "admin" && (
+                <>
+                  <ListItemLink
+                    to="/queues"
+                    primary={i18n.t("mainDrawer.listItems.queues")}
+                    icon={<AccountTreeOutlinedIcon />}
+                  />
+                  <ListItemLink
+                    to="/users"
+                    primary={i18n.t("mainDrawer.listItems.users")}
+                    icon={<PeopleAltOutlinedIcon />}
+                  />
+                  <ListItemLink
+                    to="/messages-api"
+                    primary={i18n.t("mainDrawer.listItems.messagesAPI")}
+                    icon={<CodeRoundedIcon />}
+                  />
+                  <ListItemLink
+                      to="/financeiro"
+                      primary={i18n.t("mainDrawer.listItems.financeiro")}
+                      icon={<LocalAtmIcon />}
+                    />
 
-            <ListItemLink
-              to="/settings"
-              primary={i18n.t("mainDrawer.listItems.settings")}
-              icon={<SettingsOutlinedIcon />}
-            />
+                  <ListItemLink
+                    to="/settings"
+                    primary={i18n.t("mainDrawer.listItems.settings")}
+                    icon={<SettingsOutlinedIcon />}
+                  />
+                </>
+              )}
             
               <Divider />
               <Typography style={{ fontSize: "12px", padding: "10px", textAlign: "right", fontWeight: "bold" }}>
